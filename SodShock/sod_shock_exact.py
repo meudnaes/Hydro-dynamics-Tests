@@ -1,4 +1,3 @@
-import sod
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -222,26 +221,8 @@ def main():
   sod_shock = SodShockTube()
   x, p, rho, u = sod_shock(0.2, N=25)
 
-  gamma = 1.4
-  npts = 500
-
-  # left_state and right_state set p, rho and u
-  # geometry sets left boundary on 0., right boundary on 1 and initial
-  # position of the shock xi on 0.5
-  # t is the time evolution for which positions and states in tube should be calculated
-  # gamma denotes specific heat
-  # note that gamma and npts are default parameters (1.4 and 500) in solve function
-  positions, regions, values = sod.solve(left_state=(1, 1, 0), right_state=(0.1, 0.125, 0.),
-                                         geometry=(0., 1., 0.5), t=0.2, gamma=gamma, npts=npts)
-
-  # Finally, let's plot solutions
-  p_mrk = values['p']
-  rho_mrk = values['rho']
-  u_mrk = values['u']
-
   plt.figure(1)
   plt.plot(x, rho, color='b', linewidth=3)
-  plt.plot(values['x'], rho_mrk, linewidth=1.5, color='k', ls='--')
   plt.xlabel(r"$x$")
   plt.ylabel(r"Density")
   plt.savefig("figs/sod_shock_rho.png")
@@ -249,7 +230,6 @@ def main():
 
   plt.figure(2)
   plt.plot(x, p, color='r', linewidth=3)
-  plt.plot(values['x'], p_mrk, linewidth=1.5, color='k', ls='--')
   plt.xlabel(r"$x$")
   plt.ylabel(r"Pressure")
   plt.savefig("figs/sod_shock_pressure.png")
@@ -257,7 +237,6 @@ def main():
 
   plt.figure(3)
   plt.plot(x, u, color='b', linewidth=3)
-  plt.plot(values['x'], u_mrk, linewidth=1.5, color='k', ls='--')
   plt.xlabel(r"$x$")
   plt.ylabel(r"$U_x$")
   plt.savefig("figs/sod_shock_u_x.png")
