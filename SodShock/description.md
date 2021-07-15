@@ -26,9 +26,9 @@ The initial conditions for the left and right domains are
 
 $$
 \begin{align*}
-p_l &= 1\,, \quad p_l = 0.1 \\ 
+p_l &= 1\,, \quad p_r = 0.1 \\ 
 \rho_l &= 1\,, \quad \rho_r = 0.125 \\ 
-u_r &= 0\,, \quad u_r = 0 \\
+u_l &= 0\,, \quad u_r = 0 \\
 \end{align*}
 $$
 
