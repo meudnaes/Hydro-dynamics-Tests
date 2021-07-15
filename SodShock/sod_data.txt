@@ -1,3 +1,5 @@
+# Data retrieved from https://github.com/meudnaes/Hydro-dynamics-Tests/tree/main/SodShock
+# generate data file by cloning this repository and run `python sod_shock_exact.py`
 # x density pressure u_x
 0.0000 1.0000 1.0000 0.0000
 0.0110 1.0000 1.0000 0.0000
