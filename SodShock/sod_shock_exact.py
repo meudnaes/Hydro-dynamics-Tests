@@ -70,17 +70,17 @@ class SodShockTube:
     self.c_r    = np.sqrt(self.gamma*p_r/rho_r)
 
     # constants
-    self.Lambda = (gamma - 1)/(gamma + 1)
+    self.Gamma = (gamma - 1)/(gamma + 1)
     self.beta = (gamma - 1)/(2*gamma)
 
   def shock_tube_function(self, p_mrk):
     """
     implicit relation, p_mrk = p_1 when u_1 - u_2 = 0
     """
-    u_1 = (p_mrk - self.p_r)*np.sqrt((1 - self.Lambda)/(self.rho_r*(p_mrk
-                                    + self.Lambda*self.p_r)))
-    u_2 = (self.p_l**self.beta - p_mrk**self.beta)*np.sqrt((1 - self.Lambda**2)
-              *self.p_l**(1/self.gamma)/(self.Lambda**2*self.rho_l))
+    u_1 = (p_mrk - self.p_r)*np.sqrt((1 - self.Gamma)/(self.rho_r*(p_mrk
+                                    + self.Gamma*self.p_r)))
+    u_2 = (self.p_l**self.beta - p_mrk**self.beta)*np.sqrt((1 - self.Gamma**2)
+              *self.p_l**(1/self.gamma)/(self.Gamma**2*self.rho_l))
     return u_1 - u_2
 
 
@@ -98,9 +98,9 @@ class SodShockTube:
 
     # thermodynamical quantities
     p_1 = p_mrk
-    rho_1 = self.rho_r*(p_1 + self.Lambda*self.p_r)/(self.p_r + self.Lambda*p_1)
-    u_1 = (p_mrk - self.p_r)*np.sqrt((1 - self.Lambda)/(self.rho_r*(p_mrk
-                                    + self.Lambda*self.p_r)))
+    rho_1 = self.rho_r*(p_1 + self.Gamma*self.p_r)/(self.p_r + self.Gamma*p_1)
+    u_1 = (p_mrk - self.p_r)*np.sqrt((1 - self.Gamma)/(self.rho_r*(p_mrk
+                                    + self.Gamma*self.p_r)))
 
     return p_1, rho_1, u_1
 
@@ -130,33 +130,33 @@ class SodShockTube:
 
     return p_e, rho_e, u_e
 
-  def x_1(self, t):
+  def x_le(self, t):
     """
-    interface between left (l) and expansion fan (e)
+    interface between left boundary and expansion fan (le)
     """
-    x_1 = self.x_0 - self.c_l*t
-    return x_1
+    x_le = self.x_0 - self.c_l*t
+    return x_le
 
-  def x_2(self, t, u_2, c_2):
+  def x_e2(self, t, u_2, c_2):
     """
-    interface between expansion fan (e) and contact (2)
+    interface between expansion fan and contact region (e2)
     """
-    x_2 = self.x_0 + (u_2 - c_2)*t
-    return x_2
+    x_e2 = self.x_0 + (u_2 - c_2)*t
+    return x_e2
 
-  def x_3(self, t, u_2):
+  def x_21(self, t, u_2):
     """
-    interface between contact (2) and shock (1)
+    interface between contact and shock region (21)
     """
-    x_3 = self.x_0 + u_2*t
-    return x_3
+    x_21 = self.x_0 + u_2*t
+    return x_21
 
-  def x_4(self, t, M_s):
+  def x_1r(self, t, w):
     """
-    interface between shock (1) and right (r)
+    interface between shock region and right boundary (1r)
     """
-    x_4 = self.x_0 + M_s*t
-    return x_4
+    x_1r = self.x_0 + w*t
+    return x_1r
 
   def make_array(self, q_l, q_e, q_2, q_1, q_r, N):
     """
@@ -187,18 +187,18 @@ class SodShockTube:
     p_2, rho_2, u_2 = self.contact(p_1, u_1)
 
     # find boundaries before calculating expansion fan
-    x_1 = self.x_1(t)
+    x_le = self.x_le(t)
 
     c_2 = np.sqrt(self.gamma*p_2/rho_2)
-    x_2 = self.x_2(t, u_2, c_2)
+    x_e2 = self.x_e2(t, u_2, c_2)
 
-    x_3 = self.x_3(t, u_2)
+    x_21 = self.x_21(t, u_2)
 
     z = p_2/p_r - 1
     fact = np.sqrt(1 + (self.gamma + 1)/(2*self.gamma)*z)
-    x_4 = self.x_4(t, self.c_r*fact)
+    x_1r = self.x_1r(t, self.c_r*fact)
 
-    x_e = np.linspace(x_1, x_2, N)
+    x_e = np.linspace(x_le, x_e2, N)
 
     p_e, rho_e, u_e = self.expansion_fan(x_e, t)
 
@@ -206,11 +206,11 @@ class SodShockTube:
     rho_array = self.make_array(rho_l, rho_e, rho_2, rho_1, rho_r, N)
     u_array = self.make_array(u_l, u_e, u_2, u_1, u_r, N)
 
-    x_array = np.concatenate([np.linspace(0, x_1, N),
-                              np.linspace(x_1, x_2, N),
-                              np.linspace(x_2, x_3, N),
-                              np.linspace(x_3, x_4, N),
-                              np.linspace(x_4, 1, N)])
+    x_array = np.concatenate([np.linspace(0, x_le, N),
+                              np.linspace(x_le, x_e2, N),
+                              np.linspace(x_e2, x_21, N),
+                              np.linspace(x_21, x_1r, N),
+                              np.linspace(x_1r, 1, N)])
 
     return x_array, p_array, rho_array, u_array
 
@@ -255,8 +255,8 @@ def write_table(N):
   #plt.scatter(x, rho)
   #plt.show()
   with open("sod_data.txt", 'w', encoding = 'utf-8') as f:
-    f.write("# Data retrieved from https://github.com/meudnaes/Hydro-dynamics-Tests/tree/main/SodShock")
-    f.write("# generate data file by cloning this repository and run `python sod_shock_exact.py`")
+    f.write("# Data retrieved from https://github.com/meudnaes/Hydro-dynamics-Tests/tree/main/SodShock\n")
+    f.write("# generate data file by cloning this repository and run `python sod_shock_exact.py`\n")
     f.write("# x density pressure u_x\n")
     for i in range(5*N):
       f.write("{x:.4f} {rho:.4f} {p:.4f} {u:.4f}\n".format(x=x[i], rho=rho[i], p=p[i], u=u[i]))
