@@ -32,15 +32,15 @@ u_l &= 0\,, \quad u_r = 0 \\
 \end{align*}
 $$
 
-where $p$ is pressure, $\rho$ is mass density, and $u$ is the gas velocity in the direction along the tube. At $t = 0$, the barrier is removed, and the two initial regions are allowed to mix.
+where $p$ is pressure, $\rho$ is mass density, and $u$ is the gas velocity in the direction along the tube. At $t = 0$, the barrier is removed, and the two regions are allowed to mix.
 
 When the barrier is removed, the tube is split into five domains.
 
-- Left boundary (l): *pressure, density, and velocity are constant*
-- Expansion fan (e): *pressure and density decreases*
-- Contact area (2): *region where the initial regions meet*
-- Shock (1): *shock front creates a discontinuity with the right boundary*
-- Right boundary (r): *pressure, density, and velocity are constant*
+- Left boundary $\textrm{(l)}$: *pressure, density, and velocity are constant*
+- Expansion fan $\textrm{(e)}$: *pressure and density decreases*
+- Contact area $\textrm{(2)}$: *region where the initial regions meet*
+- Shock $\textrm{(1)}$: *shock front creates a discontinuity with the right boundary*
+- Right boundary $\textrm{(r)}$: *pressure, density, and velocity are constant*
 
 The system is described with the one-dimensional Euler system of PDEs
 
@@ -59,23 +59,24 @@ e
 $$
 where $e$ is the internal energy.
 
-We use the equation of state to close the system of equations. The EOS is given by
+We use the Equation Of State (EOS) to close the system of equations. The EOS is given by
 $$
 p = \rho (\gamma - 1) e
 $$
 with $\gamma = 1.4$. We define the constants
 $$
 \begin{equation*}
-\Gamma = \frac{\gamma - 1}{\gamma + 1}\,, \quad \beta = \frac{\gamma - 1}{2\gamma}\,.
+\Gamma = \frac{\gamma - 1}{\gamma + 1}\,, \quad \beta = \frac{\gamma - 1}{2\gamma}\,,
 \end{equation*}
 $$
+which will be useful in our calculations.
 
 Another equation needed before diving into the solution, is the equation for sound speed $c$. Without further ado,
 $$
 c = \sqrt{\gamma \frac{p}{\rho}}\,.
 $$
 
-First, the *shock* region is described by the Rankine–Hugoniot relations. This relation is formulated as
+First, the *shock* region is described by the Rankine–Hugoniot relations ([wikipedia page](https://en.wikipedia.org/wiki/Rankine%E2%80%93Hugoniot_conditions)). These relations can be simplified to
 
 $$
 u_1 - u_2 = 0\,.
@@ -124,7 +125,7 @@ $$
 %\end{align}
 $$
 
-Lastly, the boundaries of the different regions are calculated. There are four boundaries that need to be found. The boundaries between *left* boundary and *expansion fan* (le), *expansion fan* and *contact* region (e2), and between *contact* and *shock* region (21) are found using the same expressions as Höfner's lecture notes. The boundary between the *shock* region and the right boundary (1r) is inspired by Ibackus' [github repository](https://github.com/ibackus/sod-shocktube).
+Lastly, the boundaries of the different regions are calculated. There are four boundaries that need to be found. The boundaries between *left* boundary and *expansion fan* $\textrm{(le)}$, *expansion fan* and *contact* region $\textrm{(e2)}$, and between *contact* and *shock* region $\textrm{(21)}$ are found using the same expressions as Höfner's lecture notes. The boundary between the *shock* region and the right boundary $\textrm{(1r)}$ is inspired by Ibackus' [github repository](https://github.com/ibackus/sod-shocktube).
 
 $$
 \begin{align}
