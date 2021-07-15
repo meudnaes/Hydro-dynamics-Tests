@@ -244,18 +244,19 @@ def main():
 
   return
 
-def write_table():
+def write_table(N):
   """
   write Sod data to file
   """
   # first load the data
   sod_shock = SodShockTube()
-  N = 5
   x, p, rho, u = sod_shock(0.2, N=N)
   # check
   #plt.scatter(x, rho)
   #plt.show()
   with open("sod_data.txt", 'w', encoding = 'utf-8') as f:
+    f.write("# Data retrieved from https://github.com/meudnaes/Hydro-dynamics-Tests/tree/main/SodShock")
+    f.write("# generate data file by cloning this repository and run `python sod_shock_exact.py`")
     f.write("# x density pressure u_x\n")
     for i in range(5*N):
       f.write("{x:.4f} {rho:.4f} {p:.4f} {u:.4f}\n".format(x=x[i], rho=rho[i], p=p[i], u=u[i]))
@@ -264,4 +265,4 @@ def write_table():
 
 if __name__ == "__main__":
   main()
-  write_table()
+  write_table(25)
